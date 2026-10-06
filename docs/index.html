@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0F2C59">
+<title>Hướng dẫn app KPI</title>
+<style>
+  :root {
+    --navy: #0F2C59;
+    --navy-2: #153A70;
+    --gold: #D4AF37;
+    --gold-soft: #FBF3DA;
+    --ink: #1B2433;
+    --muted: #5E6B7E;
+    --line: #E3E8EF;
+    --bg: #F6F7F9;
+    --card: #FFFFFF;
+    --ok: #1E7A4F;
+    --warn: #A15C07;
+    --bad: #B42318;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  body {
+    margin: 0;
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
+  a { color: var(--navy-2); }
+
+  header.dau {
+    background: var(--navy);
+    color: #fff;
+    padding: 28px 16px 22px;
+  }
+  .khung { max-width: 860px; margin: 0 auto; }
+  header.dau .nhan { color: var(--gold); font-weight: 700; letter-spacing: .04em; font-size: 13px; }
+  header.dau h1 { margin: 6px 0 6px; font-size: 26px; line-height: 1.25; }
+  header.dau p { margin: 0; color: rgba(255,255,255,.75); font-size: 15px; }
+
+  nav.muc {
+    position: sticky; top: 0; z-index: 5;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: saturate(1.4) blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.muc .cuon {
+    display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px;
+    max-width: 860px; margin: 0 auto; scrollbar-width: none;
+  }
+  nav.muc .cuon::-webkit-scrollbar { display: none; }
+  nav.muc a {
+    flex: 0 0 auto; text-decoration: none; color: var(--navy);
+    font-size: 14px; font-weight: 600; padding: 6px 12px;
+    border: 1px solid var(--line); border-radius: 999px; background: #fff;
+    white-space: nowrap;
+  }
+  nav.muc a:active { background: var(--gold-soft); }
+
+  main { padding: 8px 16px 48px; }
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 20px 18px; margin: 16px 0;
+  }
+  section h2 { margin: 0 0 4px; font-size: 21px; color: var(--navy); line-height: 1.3; }
+  section .phu { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+  section h3 { margin: 18px 0 6px; font-size: 16px; color: var(--navy); }
+
+  .noi-dung { display: grid; gap: 18px; }
+  @media (min-width: 720px) {
+    .noi-dung.co-anh { grid-template-columns: 1fr 250px; align-items: start; }
+  }
+  figure { margin: 0; text-align: center; }
+  figure img {
+    width: 100%; max-width: 250px; height: auto; display: inline-block;
+    border-radius: 18px; border: 1px solid var(--line);
+  }
+  figure img + img { margin-top: 10px; }
+  figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  ol.buoc { margin: 0; padding: 0; list-style: none; counter-reset: b; }
+  ol.buoc > li {
+    counter-increment: b; position: relative; padding: 0 0 12px 38px;
+  }
+  ol.buoc > li::before {
+    content: counter(b); position: absolute; left: 0; top: 1px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--navy); color: #fff; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ul { margin: 6px 0; padding-left: 22px; }
+  li + li { margin-top: 4px; }
+  b.nut { color: var(--navy); }
+
+  .diem {
+    display: inline-block; font-weight: 700; font-size: 14px; padding: 1px 8px;
+    border-radius: 6px; background: #E7F4EC; color: var(--ok); white-space: nowrap;
+  }
+  .diem.tru { background: #FDECEA; color: var(--bad); }
+  .diem.vang { background: var(--gold-soft); color: #7A5C0E; }
+
+  .luu-y {
+    margin-top: 14px; padding: 12px 14px; border-radius: 12px;
+    background: #FFF8E6; border: 1px solid #F3DFA6; font-size: 15px;
+  }
+  .luu-y strong { color: var(--warn); }
+  .luu-y ul { margin: 4px 0 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; color: var(--muted); font-weight: 600; }
+  td:nth-child(2) { white-space: nowrap; }
+  .nhom { font-size: 13px; color: var(--muted); }
+
+  .the-tran { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 4px; }
+  .the-tran div {
+    border: 1px solid var(--line); border-radius: 12px; padding: 10px; text-align: center;
+  }
+  .the-tran b { display: block; font-size: 22px; color: var(--navy); }
+  .the-tran span { font-size: 13px; color: var(--muted); }
+
+  details { border-top: 1px solid var(--line); padding: 12px 0; }
+  details:first-of-type { border-top: 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--navy); list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: "＋"; display: inline-block; width: 22px; color: var(--gold); }
+  details[open] summary::before { content: "－"; }
+  details p, details ul { margin: 8px 0 0 22px; }
+
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 16px 32px; }
+</style>
+</head>
+<body>
+
+<header class="dau">
+  <div class="khung">
+    <div class="nhan">TRÍ LONG LAND · APP KPI</div>
+    <h1>Hướng dẫn sử dụng</h1>
+    <p>Dành cho nhân viên kinh doanh. Nhân viên Văn phòng chỉ dùng phần Chấm công, Xin vắng, Phản hồi và Trang cá nhân.</p>
+  </div>
+</header>
+
+<nav class="muc" aria-label="Mục lục">
+  <div class="cuon">
+    <a href="#diem">Điểm KPI</a>
+    <a href="#bat-dau">Bắt đầu</a>
+    <a href="#cham-cong">Chấm công</a>
+    <a href="#xin-vang">Xin vắng</a>
+    <a href="#lich-su">Lịch sử</a>
+    <a href="#thuc-chien">Thực chiến</a>
+    <a href="#bai-post">Bài post</a>
+    <a href="#dao-tao">Đào tạo</a>
+    <a href="#dao-tao-1-1">Đào tạo 1-1</a>
+    <a href="#gieo-hat">Gieo hạt</a>
+    <a href="#chot-can">Chốt căn</a>
+    <a href="#phan-hoi">Phản hồi</a>
+    <a href="#thong-bao">Thông báo</a>
+    <a href="#ca-nhan">Cá nhân</a>
+    <a href="#cap-nhat">Cập nhật app</a>
+    <a href="#loi-thuong-gap">Lỗi thường gặp</a>
+  </div>
+</nav>
+
+<main class="khung">
+
+  <!-- ─────────────────────────── ĐIỂM KPI ─────────────────────────── -->
+  <section id="diem">
+    <h2>Điểm KPI tính thế nào</h2>
+    <p class="phu">Mỗi tuần tối đa <b>100 điểm</b>, chia 3 nhóm. Nhóm nào đủ trần thì làm thêm việc của nhóm đó cũng không cộng nữa.</p>
+    <div class="the-tran">
+      <div><b>30</b><span>Phát triển cá nhân</span></div>
+      <div><b>40</b><span>Thực chiến</span></div>
+      <div><b>30</b><span>Lan tỏa</span></div>
+    </div>
+    <table>
+      <thead><tr><th>Việc</th><th>Điểm</th></tr></thead>
+      <tbody>
+        <tr><td>Chấm công vào đúng giờ<div class="nhom">Phát triển cá nhân · sáng đến 08:45, chiều 12:00–13:45 · mỗi ngày tính 1 lần</div></td><td><span class="diem">+5</span></td></tr>
+        <tr><td>Chấm công vào muộn<div class="nhom">Phát triển cá nhân</div></td><td><span class="diem tru">−5</span></td></tr>
+        <tr><td>Dự đủ các buổi đào tạo bắt buộc trong tuần<div class="nhom">Phát triển cá nhân · chốt sau 23:00 Chủ nhật</div></td><td><span class="diem">+15</span></td></tr>
+        <tr><td>Vắng có đơn được duyệt<div class="nhom">Phát triển cá nhân</div></td><td><span class="diem tru">−10</span></td></tr>
+        <tr><td>Vắng không phép (không chấm công, không có đơn)<div class="nhom">Phát triển cá nhân · Chủ nhật không tính</div></td><td><span class="diem tru">−15</span></td></tr>
+        <tr><td>Gặp khách<div class="nhom">Thực chiến · sau khi Admin duyệt</div></td><td><span class="diem">+10</span></td></tr>
+        <tr><td>Hỗ trợ khách<div class="nhom">Thực chiến · sau khi Admin duyệt</div></td><td><span class="diem">+5</span></td></tr>
+        <tr><td>Đào tạo 1-1<div class="nhom">Thực chiến · sau khi Admin duyệt</div></td><td><span class="diem">+5</span></td></tr>
+        <tr><td>Tăng ca: chấm công ra từ 20:00<div class="nhom">Thực chiến · thứ Hai đến thứ Sáu</div></td><td><span class="diem">+5</span></td></tr>
+        <tr><td>Bài đăng hoặc video được duyệt<div class="nhom">Lan tỏa</div></td><td><span class="diem">+5</span></td></tr>
+        <tr><td>Gieo hạt: người bạn giới thiệu làm đủ 1 tháng<div class="nhom">Lan tỏa</div></td><td><span class="diem">+15</span></td></tr>
+        <tr><td>Chốt căn được duyệt</td><td><span class="diem vang">Đạt 100% KPI tháng</span></td></tr>
+      </tbody>
+    </table>
+    <div class="luu-y">
+      <strong>Cần biết</strong>
+      <ul>
+        <li>Điểm mỗi nhóm không xuống dưới 0. Nhóm đang 0 điểm thì khoản trừ sẽ không trừ thêm.</li>
+        <li><b>Tháng KPI tính theo tuần:</b> cả tuần thuộc tháng của ngày thứ Hai đầu tuần. Ví dụ tuần 28/09–04/10 tính hết cho tháng 9. Tháng có 4 thứ Hai tối đa 400 điểm, 5 thứ Hai tối đa 500 điểm.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── BẮT ĐẦU ─────────────────────────── -->
+  <section id="bat-dau">
+    <h2>Bắt đầu</h2>
+    <p class="phu">Đăng nhập một lần, app tự giữ đăng nhập cho những lần sau.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Mở app, đăng nhập bằng <b>số điện thoại</b> và <b>mật khẩu</b> công ty cấp.</li>
+          <li>Bấm biểu tượng <b class="nut">☰</b> góc trên bên trái để mở menu các mục.</li>
+          <li>Biểu tượng <b class="nut">chuông</b> góc phải là Thông báo điểm. Số đỏ trên chuông là số khoản điểm mới chưa xem.</li>
+          <li>Lần đầu dùng, nên vào <b>Trang cá nhân → Đổi mật khẩu</b>.</li>
+        </ol>
+      </div>
+      <figure><img src="anh/menu.jpg" width="414" height="896" alt="Menu các mục của app" loading="lazy"><figcaption>Menu các mục</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── CHẤM CÔNG ─────────────────────────── -->
+  <section id="cham-cong">
+    <h2>Chấm công vào / ra</h2>
+    <p class="phu">Menu → Chấm công → tab <b>CHẤM CÔNG</b>.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Chọn <b class="nut">CHẤM CÔNG VÀO</b> (nút xanh) khi đến, <b class="nut">CHẤM CÔNG RA</b> (nút đỏ) khi về.</li>
+          <li>Chạm vào khung <b>"Chạm để chụp ảnh xác thực"</b>. App mở camera trước, chụp rõ mặt, đủ sáng.</li>
+          <li>Ghi chú công việc hôm nay nếu cần.</li>
+          <li>Bấm <b class="nut">XÁC NHẬN CHẤM CÔNG</b>.
+            <ul>
+              <li><b>Trong phạm vi văn phòng:</b> ghi nhận ngay.</li>
+              <li><b>Ngoài văn phòng</b> (đi gặp khách, đi dự án): app hiện ô <b>"Lý do đi thị trường"</b>. Ghi lý do rồi bấm <b class="nut">GỬI YÊU CẦU XÉT DUYỆT</b>. Lượt này chờ Admin duyệt.</li>
+            </ul>
+          </li>
+        </ol>
+        <div class="luu-y">
+          <strong>Lưu ý</strong>
+          <ul>
+            <li>Đúng giờ: ca sáng chấm vào đến <b>08:45</b>, ca chiều từ <b>12:00 đến 13:45</b>. Đúng giờ <span class="diem">+5</span>, muộn <span class="diem tru">−5</span>.</li>
+            <li><b>Nhớ chấm công ra.</b> Ngày chỉ có giờ vào hoặc chỉ có giờ ra chỉ được tính <b>0,5 công</b>.</li>
+            <li>Về từ 20:00 các ngày thứ Hai đến thứ Sáu, chấm công ra được tính tăng ca <span class="diem">+5</span>.</li>
+            <li>Không dùng ứng dụng giả vị trí. App phát hiện sẽ chặn chấm công.</li>
+            <li>Chụp ảnh khuôn mặt thật của mình, không chụp lại ảnh trên điện thoại khác. Admin sẽ từ chối các lượt như vậy.</li>
+          </ul>
+        </div>
+      </div>
+      <figure>
+        <img src="anh/cham-cong-vao.jpg" width="414" height="896" alt="Màn hình chấm công vào" loading="lazy">
+        <img src="anh/cham-cong-ra.jpg" width="414" height="896" alt="Màn hình chấm công ra" loading="lazy">
+        <figcaption>Chấm công vào (xanh) và ra (đỏ)</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── XIN VẮNG ─────────────────────────── -->
+  <section id="xin-vang">
+    <h2>Xin vắng</h2>
+    <p class="phu">Menu → Chấm công → tab <b>XIN VẮNG</b>. Gửi trước ngày nghỉ để Admin kịp duyệt.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Chọn <b>ngày xin vắng</b>.</li>
+          <li>Ghi <b>lý do</b>, ví dụ: nghỉ khám sức khỏe định kỳ.</li>
+          <li>Bấm <b class="nut">GỬI ĐƠN XIN VẮNG</b>. Đơn đã gửi hiện ngay bên dưới cùng trạng thái duyệt.</li>
+        </ol>
+        <div class="luu-y">
+          <strong>Cách trừ điểm</strong>
+          <ul>
+            <li>Đơn được duyệt: vắng có phép <span class="diem tru">−10</span>.</li>
+            <li>Không chấm công và không có đơn: hệ thống tự ghi <b>vắng không phép</b> <span class="diem tru">−15</span> vào cuối ngày.</li>
+            <li>Chủ nhật không tính vắng.</li>
+          </ul>
+        </div>
+      </div>
+      <figure><img src="anh/xin-vang.jpg" width="414" height="896" alt="Màn hình xin vắng" loading="lazy"><figcaption>Đơn đã gửi hiện bên dưới</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── LỊCH SỬ ─────────────────────────── -->
+  <section id="lich-su">
+    <h2>Xem lại lịch sử</h2>
+    <p class="phu">Chấm công, Thực chiến, Bài post, Đào tạo, Chốt căn, Phản hồi đều có tab <b>LỊCH SỬ</b>.</p>
+    <ol class="buoc">
+      <li>Mở tab <b>LỊCH SỬ</b> (hoặc <b>LỊCH SỬ GỬI</b>) của mục cần xem.</li>
+      <li>Chọn <b>Theo ngày</b> để xem một ngày, hoặc <b>Theo tháng</b> để xem cả tháng. Ở chế độ tháng, bấm mũi tên ‹ › để đổi tháng. Danh sách chia theo từng ngày, ngày mới nhất ở trên.</li>
+      <li>Mỗi mục có trạng thái: <span class="diem vang">Đang chờ</span> <span class="diem">Đã duyệt</span> <span class="diem tru">Từ chối</span>. Admin duyệt trên máy tính là app tự cập nhật, không cần thoát ra vào lại.</li>
+    </ol>
+  </section>
+
+  <!-- ─────────────────────────── THỰC CHIẾN ─────────────────────────── -->
+  <section id="thuc-chien">
+    <h2>Thực chiến</h2>
+    <p class="phu">Báo cáo mỗi lần gặp hoặc hỗ trợ khách. Admin duyệt mới cộng điểm.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Chọn loại: <b>Gặp khách</b> <span class="diem">+10</span> hoặc <b>Hỗ trợ khách</b> <span class="diem">+5</span>.</li>
+          <li>Ghi <b>nội dung trao đổi</b>: nhu cầu của khách, thời gian hẹn tiếp theo…</li>
+          <li>Chạm khung ảnh, <b>chụp ảnh tại chỗ có cả bạn và khách</b>.</li>
+          <li>Bấm <b class="nut">GỬI BÁO CÁO GẶP MẶT</b>.</li>
+        </ol>
+        <div class="luu-y">
+          <strong>Lưu ý</strong>
+          <ul>
+            <li>Ảnh tự đóng dấu ngày giờ và địa điểm chụp.</li>
+            <li>Nhóm Thực chiến tối đa <b>40 điểm/tuần</b>, tính chung với Đào tạo 1-1 và tăng ca.</li>
+            <li>Mất mạng lúc gửi? Báo cáo được giữ lại, có mạng app tự gửi tiếp.</li>
+          </ul>
+        </div>
+      </div>
+      <figure><img src="anh/thuc-chien.jpg" width="414" height="896" alt="Màn hình thực chiến" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── BÀI POST ─────────────────────────── -->
+  <section id="bai-post">
+    <h2>Bài post</h2>
+    <p class="phu">Đăng bài về dự án lên Facebook, Zalo hoặc TikTok rồi gửi link để được cộng điểm Lan tỏa.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Chọn loại: <b>Bài đăng / Story</b> hoặc <b>Video xây kênh</b>.</li>
+          <li>Dán <b>link bài viết</b>.</li>
+          <li>Dán <b>nội dung caption</b> đã đăng. Caption phải có <b>#trilongland</b> và ít nhất 1 tag phụ như #bds.</li>
+          <li>Chọn <b>ảnh chụp màn hình</b> bài đăng.</li>
+          <li>Bấm gửi. Bài được duyệt <span class="diem">+5</span>.</li>
+        </ol>
+        <div class="luu-y">
+          <strong>Lưu ý</strong>
+          <ul>
+            <li>Bài phải để chế độ <b>Công khai</b>. Admin mở link không xem được thì không duyệt.</li>
+            <li><b>Không xóa hoặc đăng lại bài</b> sau khi gửi. Đăng lại TikTok là link đổi, link cũ không xem được nữa. Nếu buộc phải đăng lại, gửi lại link mới.</li>
+            <li>Nhóm Lan tỏa tối đa <b>30 điểm/tuần</b>.</li>
+          </ul>
+        </div>
+      </div>
+      <figure><img src="anh/bai-post.jpg" width="414" height="896" alt="Màn hình bài post" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── ĐÀO TẠO ─────────────────────────── -->
+  <section id="dao-tao">
+    <h2>Đào tạo</h2>
+    <p class="phu">Menu → Đào tạo. Tab <b>PHÒNG HỌC</b> là lịch đào tạo tuần này, tab <b>KHO VIDEO</b> để xem lại.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <h3>Điểm danh buổi học</h3>
+        <ol class="buoc">
+          <li>Đến lớp, mở tab <b>PHÒNG HỌC</b>, chọn buổi đang diễn ra.</li>
+          <li>Quét <b>mã QR</b> đang chiếu trên màn hình lớp học.</li>
+        </ol>
+        <div class="luu-y">
+          <strong>Điểm đào tạo</strong>
+          <ul>
+            <li>Dự <b>đủ tất cả</b> các buổi bắt buộc trong tuần được <span class="diem">+15</span>. Thiếu một buổi là tuần đó không được.</li>
+            <li>Tuần công ty không tổ chức buổi nào cũng được <span class="diem">+15</span>.</li>
+            <li>Điểm <b>chốt sau 23:00 Chủ nhật</b>. Giữa tuần chưa thấy cộng là bình thường.</li>
+            <li>Mã QR tự đổi khoảng 30 giây một lần. Báo hết hạn thì quét lại mã đang hiện.</li>
+          </ul>
+        </div>
+        <h3>Kho video</h3>
+        <p style="margin:0">Các buổi đã kết thúc và video bài giảng (nếu có). Bấm <b>Xem chi tiết</b> để mở.</p>
+      </div>
+      <figure>
+        <img src="anh/dao-tao.jpg" width="414" height="896" alt="Phòng học đào tạo" loading="lazy">
+        <img src="anh/kho-video.jpg" width="414" height="896" alt="Kho video đào tạo" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── ĐÀO TẠO 1-1 ─────────────────────────── -->
+  <section id="dao-tao-1-1">
+    <h2>Đào tạo 1-1</h2>
+    <p class="phu">Khi bạn kèm một đồng nghiệp. Menu → Đào tạo → nút đỏ <b>BÁO CÁO ĐÀO TẠO 1-1</b>.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Ghi <b>nội dung đào tạo</b>: kèm ai, trao đổi kiến thức gì.</li>
+          <li>Thêm <b>hình ảnh minh chứng</b>: chụp trực tiếp hoặc chọn từ thư viện. Ảnh tự đóng dấu ngày giờ và địa điểm.</li>
+          <li>Bấm <b class="nut">Nộp báo cáo</b>. Admin duyệt <span class="diem">+5</span> (nhóm Thực chiến).</li>
+        </ol>
+        <div class="luu-y"><strong>Lưu ý</strong> Không dùng ứng dụng giả vị trí. App sẽ chặn như khi chấm công.</div>
+      </div>
+      <figure><img src="anh/dao-tao-1-1.jpg" width="414" height="896" alt="Báo cáo đào tạo 1-1" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── GIEO HẠT ─────────────────────────── -->
+  <section id="gieo-hat">
+    <h2>Gieo hạt</h2>
+    <p class="phu">Giới thiệu người vào làm công ty.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Nhập <b>họ tên</b> và <b>số điện thoại</b> người được giới thiệu. Số này sẽ là tài khoản đăng nhập của họ.</li>
+          <li>Viết vài dòng <b>giới thiệu thêm</b>: quen thế nào, kinh nghiệm gì.</li>
+          <li>Bấm <b class="nut">GỬI ĐƠN GIỚI THIỆU</b>. Admin duyệt và mở tài khoản cho người đó.</li>
+        </ol>
+        <div class="luu-y"><strong>Khi nào được cộng điểm</strong> Một tháng sau người đó vẫn còn làm thì bạn được <span class="diem">+15</span> (nhóm Lan tỏa). Ví dụ giới thiệu ngày 15/7, đến 15/8 bạn ấy vẫn đi làm.</div>
+      </div>
+      <figure><img src="anh/gieo-hat.jpg" width="414" height="896" alt="Màn hình gieo hạt" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── CHỐT CĂN ─────────────────────────── -->
+  <section id="chot-can">
+    <h2>Chốt căn</h2>
+    <p class="phu">Khai báo căn đã cọc giữ chỗ để Admin kiểm duyệt.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Nhập tên và số điện thoại khách mua.</li>
+          <li>Nhập dự án, mã căn hộ / block và giá trị giao dịch.</li>
+          <li>Bấm <b class="nut">ĐĂNG KÝ CHỐT CĂN</b>.</li>
+        </ol>
+        <div class="luu-y"><strong>Quyền lợi</strong> Chốt căn được duyệt thì tháng đó bạn <b>đạt 100% KPI tháng</b>, không phụ thuộc số điểm.</div>
+      </div>
+      <figure><img src="anh/chot-can.jpg" width="414" height="896" alt="Màn hình chốt căn" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── PHẢN HỒI ─────────────────────────── -->
+  <section id="phan-hoi">
+    <h2>Phản hồi</h2>
+    <p class="phu">Khiếu nại chấm công hoặc điểm KPI, báo lỗi app, góp ý. Gửi thẳng đến Ban quản lý.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Nhập <b>tiêu đề</b>, ví dụ: Khiếu nại chấm công ngày 20/9.</li>
+          <li>Chọn <b>danh mục</b> và trình bày <b>nội dung chi tiết</b>.</li>
+          <li>Gặp lỗi thì đính kèm <b>ảnh chụp màn hình</b> (tối đa 5 ảnh, chọn Thư viện hoặc Chụp).</li>
+          <li>Chọn mức đánh giá rồi gửi. Câu trả lời của Admin hiện ở tab <b>LỊCH SỬ GỬI</b>.</li>
+        </ol>
+      </div>
+      <figure><img src="anh/phan-hoi.jpg" width="414" height="896" alt="Màn hình phản hồi" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── THÔNG BÁO ─────────────────────────── -->
+  <section id="thong-bao">
+    <h2>Thông báo điểm</h2>
+    <p class="phu">Bấm chuông góc phải, hoặc Menu → Thông báo.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ul>
+          <li>Chọn <b>Theo tuần</b> hoặc <b>Theo tháng</b>, bấm mũi tên ‹ › để xem tuần/tháng khác.</li>
+          <li>Ô trên cùng là tổng điểm của kỳ đang xem, chia theo nhóm.</li>
+          <li>Bên dưới là từng khoản cộng/trừ kèm lý do và thời điểm. Nếu nhóm đã 0 điểm, khoản trừ được ghi "không trừ được nữa".</li>
+        </ul>
+        <div class="luu-y"><strong>Thấy điểm sai?</strong> Gửi <a href="#phan-hoi">Phản hồi</a> danh mục "Khiếu nại điểm KPI", ghi rõ ngày và khoản điểm.</div>
+      </div>
+      <figure><img src="anh/thong-bao.jpg" width="414" height="896" alt="Màn hình thông báo điểm" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── CÁ NHÂN ─────────────────────────── -->
+  <section id="ca-nhan">
+    <h2>Trang cá nhân</h2>
+    <p class="phu">Xem mã nhân viên, phòng ban, số điện thoại và đổi mật khẩu.</p>
+    <div class="noi-dung co-anh">
+      <div>
+        <ol class="buoc">
+          <li>Menu → <b>Trang cá nhân</b>.</li>
+          <li>Bấm <b class="nut">Đổi mật khẩu</b>, nhập mật khẩu cũ và mật khẩu mới.</li>
+        </ol>
+        <div class="luu-y"><strong>Thông tin sai?</strong> Phòng ban, số điện thoại do Admin quản lý. Gửi Phản hồi để được sửa.</div>
+      </div>
+      <figure><img src="anh/ca-nhan.jpg" width="414" height="896" alt="Trang cá nhân" loading="lazy"><figcaption>Thông tin cá nhân trong ảnh đã được làm mờ</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── CẬP NHẬT APP ─────────────────────────── -->
+  <section id="cap-nhat">
+    <h2>Cập nhật app</h2>
+    <p class="phu">Luôn dùng bản mới nhất để không bị lỗi và có đủ tính năng.</p>
+    <h3>Điện thoại Android</h3>
+    <ol class="buoc">
+      <li>Khi có bản mới, app hiện hộp <b>"Đã có bản …"</b>. Bấm <b class="nut">Cập nhật</b>.</li>
+      <li>Đợi app tải xong, Android hỏi <b>"Bạn có muốn cập nhật ứng dụng này?"</b>, bấm <b>Cập nhật</b>.</li>
+      <li><b>Lần đầu</b> Android có thể hỏi <b>"Cho phép cài ứng dụng từ nguồn này"</b>: bật lên, quay lại app bấm <b>Cập nhật</b> lần nữa.</li>
+    </ol>
+    <p style="margin:4px 0 0">Bấm <b>Để sau</b> thì app hỏi lại sau 12 giờ. Cập nhật không làm mất dữ liệu hay đăng nhập.</p>
+    <h3>iPhone</h3>
+    <p style="margin:0">Mở app <b>TestFlight</b>, bấm <b>Cập nhật</b> ở dòng Trí Long Land.</p>
+  </section>
+
+  <!-- ─────────────────────────── LỖI THƯỜNG GẶP ─────────────────────────── -->
+  <section id="loi-thuong-gap">
+    <h2>Lỗi thường gặp</h2>
+    <details>
+      <summary>Đang ở văn phòng mà app báo ngoài phạm vi</summary>
+      <ul>
+        <li>Bật định vị ở chế độ <b>chính xác cao</b>, bật Wi-Fi (giúp định vị chuẩn hơn).</li>
+        <li>Ra gần cửa sổ, đợi vài giây rồi thử lại.</li>
+        <li>Vẫn báo ngoài phạm vi thì ghi lý do và gửi yêu cầu xét duyệt, Admin sẽ duyệt.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>App báo đang dùng vị trí giả</summary>
+      <p>Tắt hoặc gỡ các ứng dụng giả vị trí (Fake GPS…). Trên Android, vào Tùy chọn nhà phát triển và bỏ chọn "ứng dụng vị trí mô phỏng". Sau đó mở lại app.</p>
+    </details>
+    <details>
+      <summary>Quét QR đào tạo báo mã hết hạn</summary>
+      <p>Mã đổi khoảng 30 giây một lần. Quét lại mã đang hiện trên màn hình lớp học.</p>
+    </details>
+    <details>
+      <summary>Bài TikTok/Facebook bị từ chối vì không xem được</summary>
+      <p>Kiểm tra bài để chế độ Công khai và chưa bị xóa. Nếu đã đăng lại, link mới khác link cũ: gửi lại bài với link mới.</p>
+    </details>
+    <details>
+      <summary>Đã đi học đủ mà chưa thấy điểm đào tạo</summary>
+      <p>Điểm đào tạo chốt sau 23:00 Chủ nhật cho cả tuần. Sáng thứ Hai mở Thông báo để xem.</p>
+    </details>
+    <details>
+      <summary>Quên chấm công hoặc chấm nhầm vào/ra</summary>
+      <p>Gửi <a href="#phan-hoi">Phản hồi</a> danh mục khiếu nại chấm công, ghi rõ ngày, giờ thực tế, kèm ảnh nếu có.</p>
+    </details>
+    <details>
+      <summary>Đầu tháng thấy điểm tháng về 0</summary>
+      <p>Tháng KPI mới bắt đầu từ thứ Hai đầu tiên của tháng. Những ngày đầu tháng trước thứ Hai đó vẫn tính cho tháng trước.</p>
+    </details>
+    <details>
+      <summary>Không gửi được, app báo lỗi mạng</summary>
+      <p>Kiểm tra Wi-Fi hoặc 4G rồi thử lại. Báo cáo Thực chiến được giữ lại và tự gửi khi có mạng. Lỗi kéo dài thì chụp màn hình gửi Phản hồi danh mục báo lỗi.</p>
+    </details>
+  </section>
+
+</main>
+
+<footer>Trí Long Land · Hướng dẫn app KPI · cập nhật 06/10/2026</footer>
+</body>
+</html>
