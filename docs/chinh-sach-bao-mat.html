@@ -77,7 +77,7 @@
           <tr><td>Họ tên, số điện thoại, phòng ban, chức vụ, ảnh đại diện</td><td>Công ty tạo tài khoản cho bạn</td><td>Đăng nhập, hiển thị tên trên báo cáo và bảng điểm</td></tr>
           <tr><td>Mật khẩu</td><td>Khi đăng nhập, đổi mật khẩu</td><td>Xác thực. Mật khẩu được lưu dạng mã hóa một chiều, không ai đọc được</td></tr>
           <tr><td>Vị trí chính xác (GPS) và địa chỉ tương ứng</td><td><b>Chỉ khi bạn bấm</b> chấm công, gửi báo cáo gặp khách hoặc chụp ảnh tại thực địa</td><td>Xác nhận bạn đang ở văn phòng hoặc tại điểm gặp khách. Ứng dụng <b>không</b> theo dõi vị trí chạy nền</td></tr>
-          <tr><td>Ảnh chụp khi chấm công</td><td>Khi bạn chấm công vào / ra</td><td>Làm bằng chứng chấm công. Ảnh được đóng dấu thời gian và địa điểm. Ứng dụng <b>không</b> nhận dạng khuôn mặt</td></tr>
+          <tr><td>Ảnh chụp khi chấm công</td><td>Khi bạn chấm công vào / ra</td><td>Làm bằng chứng chấm công. Ảnh được đóng dấu thời gian và địa điểm. Xem thêm mục 3 về kiểm tra khuôn mặt</td></tr>
           <tr><td>Ảnh và nội dung báo cáo (gặp khách, bài đăng, đào tạo, góp ý, đơn xin vắng)</td><td>Khi bạn gửi</td><td>Để quản lý xét duyệt và chấm điểm KPI</td></tr>
           <tr><td>Thời gian chấm công, kết quả điểm danh đào tạo (quét mã QR)</td><td>Khi bạn chấm công, quét mã</td><td>Tính công, tính điểm KPI</td></tr>
           <tr><td>Mã nhận thông báo đẩy của thiết bị</td><td>Khi bạn cho phép thông báo</td><td>Gửi thông báo duyệt báo cáo, điểm KPI</td></tr>
@@ -89,7 +89,17 @@
   </section>
 
   <section>
-    <h2>3. Quyền truy cập trên điện thoại</h2>
+    <h2>3. Kiểm tra khuôn mặt khi chấm công</h2>
+    <p>Để chống chấm công hộ, ảnh chấm công được kiểm tra như sau:</p>
+    <ul>
+      <li><b>Trên điện thoại:</b> ứng dụng kiểm tra ảnh có khuôn mặt người hay không (công nghệ Google ML Kit, chạy ngay trên máy, không gửi đi đâu).</li>
+      <li><b>Trên máy chủ:</b> hệ thống có thể so ảnh chấm công vào với ảnh đại diện của bạn để xác nhận đúng người, bằng dịch vụ Amazon Rekognition. Kết quả chỉ là “khớp” hoặc “không khớp”.</li>
+    </ul>
+    <p>Công ty không tạo hay lưu mẫu nhận dạng khuôn mặt riêng của bạn. Công ty chỉ lưu ảnh chụp chấm công và ảnh đại diện.</p>
+  </section>
+
+  <section>
+    <h2>4. Quyền truy cập trên điện thoại</h2>
     <ul>
       <li><b>Camera:</b> chụp ảnh chấm công, ảnh báo cáo, quét mã QR điểm danh đào tạo.</li>
       <li><b>Thư viện ảnh:</b> chọn ảnh có sẵn để đính kèm báo cáo, bài đăng, góp ý.</li>
@@ -100,17 +110,17 @@
   </section>
 
   <section>
-    <h2>4. Ai xem được dữ liệu của bạn</h2>
+    <h2>5. Ai xem được dữ liệu của bạn</h2>
     <ul>
       <li><b>Bạn:</b> xem được dữ liệu và điểm của chính mình.</li>
       <li><b>Quản trị viên và quản lý được Công ty giao quyền:</b> xem, duyệt báo cáo và chấm công để quản lý nhân sự, tính công, tính lương thưởng.</li>
-      <li><b>Nhà cung cấp hạ tầng</b> lưu trữ và xử lý dữ liệu thay mặt Công ty: máy chủ ứng dụng (Render), cơ sở dữ liệu (Supabase), lưu trữ ảnh (Cloudinary), gửi thông báo đẩy (Google Firebase). Việc đổi tọa độ thành địa chỉ dùng dịch vụ bản đồ có sẵn của hệ điều hành (Apple trên iPhone, Google trên Android). Các bên này chỉ xử lý dữ liệu để vận hành ứng dụng.</li>
+      <li><b>Nhà cung cấp hạ tầng</b> lưu trữ và xử lý dữ liệu thay mặt Công ty: máy chủ ứng dụng (Render), cơ sở dữ liệu (Supabase), lưu trữ ảnh (Cloudinary), gửi thông báo đẩy (Google Firebase), so khớp ảnh chấm công với ảnh đại diện (Amazon Rekognition). Khi quản trị viên dùng chức năng kiểm tra bài đăng bằng AI, ảnh chụp màn hình và nội dung bài đăng đó được gửi tới Google Gemini để đánh giá. Việc đổi tọa độ thành địa chỉ dùng dịch vụ bản đồ có sẵn của hệ điều hành (Apple trên iPhone, Google trên Android). Các bên này chỉ xử lý dữ liệu để vận hành ứng dụng.</li>
     </ul>
     <p>Chúng tôi không bán, không cho thuê dữ liệu cá nhân cho bất kỳ ai.</p>
   </section>
 
   <section>
-    <h2>5. Bảo vệ và lưu giữ dữ liệu</h2>
+    <h2>6. Bảo vệ và lưu giữ dữ liệu</h2>
     <ul>
       <li>Dữ liệu được truyền qua kết nối mã hóa (HTTPS).</li>
       <li>Dữ liệu được giữ trong thời gian bạn làm việc tại Công ty và theo thời hạn lưu hồ sơ chấm công, tiền lương mà Công ty phải tuân thủ.</li>
@@ -119,7 +129,7 @@
   </section>
 
   <section>
-    <h2>6. Quyền của bạn</h2>
+    <h2>7. Quyền của bạn</h2>
     <p>Bạn có quyền yêu cầu xem, sửa thông tin sai, hoặc xóa dữ liệu cá nhân của mình, trừ những dữ liệu Công ty bắt buộc phải lưu theo quy định. Hãy gửi yêu cầu cho quản lý trực tiếp, bộ phận IT – Hành chính Nhân sự, hoặc email <a href="mailto:ceo@trilongland.vn">ceo@trilongland.vn</a>. Công ty sẽ phản hồi trong thời gian hợp lý.</p>
   </section>
 
@@ -129,15 +139,16 @@
   </section>
 
   <section>
-    <h2>7. Thay đổi chính sách</h2>
+    <h2>8. Thay đổi chính sách</h2>
     <p>Khi chính sách thay đổi, chúng tôi cập nhật trang này và ghi ngày cập nhật ở đầu trang.</p>
   </section>
 
   <section class="en" lang="en">
     <h2>English summary</h2>
     <p>“Trí Long Land” is an internal app of Tri Long Real Estate Co., Ltd. for its employees only. Accounts are issued by the company; there is no public sign-up, no ads and no payments.</p>
-    <p>We collect: name, phone number, department and role (provided by the company); precise location and the matching address <b>only when the user taps</b> check-in or submits a field report (no background tracking); check-in photos (no face recognition); report content and photos the user submits; attendance and training check-in records; and a push-notification token. Data is used solely to run attendance, reporting and KPI scoring for the company. It is not sold, not used for advertising and not used for tracking.</p>
-    <p>Data is processed by our infrastructure providers (Render, Supabase, Cloudinary, Google Firebase) on the company’s behalf and sent over HTTPS. Employees may ask their manager, the company’s IT / HR department, or email <a href="mailto:ceo@trilongland.vn">ceo@trilongland.vn</a> to access, correct or delete their personal data, except records the company must keep by law.</p>
+    <p>We collect: name, phone number, department and role (provided by the company); precise location and the matching address <b>only when the user taps</b> check-in or submits a field report (no background tracking); check-in photos; report content and photos the user submits; attendance and training check-in records; and a push-notification token. Data is used solely to run attendance, reporting and KPI scoring for the company. It is not sold, not used for advertising and not used for tracking.</p>
+    <p>To prevent buddy punching, the app checks on the device (Google ML Kit) that a check-in photo contains a face, and the server may compare the check-in photo with the employee’s profile photo using Amazon Rekognition to confirm the right person is checking in. The company does not create or keep face templates; only the photos themselves are stored. When an administrator uses the AI post-review feature, that post’s screenshot and caption are sent to Google Gemini for evaluation.</p>
+    <p>Data is processed by our infrastructure providers (Render, Supabase, Cloudinary, Google Firebase, Amazon Web Services) on the company’s behalf and sent over HTTPS. Employees may ask their manager, the company’s IT / HR department, or email <a href="mailto:ceo@trilongland.vn">ceo@trilongland.vn</a> to access, correct or delete their personal data, except records the company must keep by law.</p>
   </section>
 
 </main>
